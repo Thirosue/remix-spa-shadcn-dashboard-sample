@@ -1,0 +1,1 @@
+echo "husky: pre-commit hook started"
