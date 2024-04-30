@@ -39,6 +39,7 @@ export default tseslint.config(
     rules: {
       ...reactRecommended.rules,
       ...reactJSXRuntime.rules,
+      "no-console": "error",
     },
     languageOptions: {
       ...reactRecommended.languageOptions,
