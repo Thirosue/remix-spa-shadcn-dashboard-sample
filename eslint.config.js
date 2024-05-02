@@ -1,25 +1,25 @@
-import globals from 'globals';
-import eslint from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
-import tseslint from 'typescript-eslint';
-import reactPlugin from 'eslint-plugin-react';
-import reactRecommended from 'eslint-plugin-react/configs/recommended.js';
-import reactJSXRuntime from 'eslint-plugin-react/configs/jsx-runtime.js';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import importPlugin from 'eslint-plugin-import';
+import globals from "globals";
+import eslint from "@eslint/js";
+import { FlatCompat } from "@eslint/eslintrc";
+import tseslint from "typescript-eslint";
+import reactPlugin from "eslint-plugin-react";
+import reactRecommended from "eslint-plugin-react/configs/recommended.js";
+import reactJSXRuntime from "eslint-plugin-react/configs/jsx-runtime.js";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
+import importPlugin from "eslint-plugin-import";
 
 const compat = new FlatCompat();
 
 export default tseslint.config(
   {
-    ignores: ['node_modules', '.cache', 'build', 'public/build', '.env'],
+    ignores: ["node_modules", ".cache", "build", "public/build", ".env"],
   },
   {
     ...eslint.configs.recommended,
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      ecmaVersion: "latest",
+      sourceType: "module",
       globals: {
         ...globals.browser,
         ...globals.commonjs,
@@ -27,7 +27,7 @@ export default tseslint.config(
       },
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
+          jsx: true,
         },
       },
     },
@@ -47,7 +47,7 @@ export default tseslint.config(
     },
     plugins: {
       react: reactPlugin,
-      ['jsx-a11y']: jsxA11yPlugin,
+      ["jsx-a11y"]: jsxA11yPlugin,
     },
     extends: [
       ...compat.config(reactHooksPlugin.configs.recommended),
@@ -90,11 +90,11 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.js'],
+    files: ["eslint.config.js"],
     languageOptions: {
       globals: {
-        ...globals.node
+        ...globals.node,
       },
     },
-  }
+  },
 );
