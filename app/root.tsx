@@ -5,6 +5,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { cn } from "~/lib/utils";
 
 import type { LinksFunction } from "@remix-run/node";
 
@@ -23,7 +24,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
         {children}
         <ScrollRestoration />
         <Scripts />
