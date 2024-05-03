@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { Icons } from "~/components/icons";
 import { Input } from "~/components/ui/input";
 import { PasswordInput } from "~/components/password-input";
 import { useMutation } from "@tanstack/react-query";
@@ -83,7 +84,13 @@ export function SignInForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">
+        <Button type="submit" disabled={mutation.isPending}>
+          {mutation.isPending && (
+            <Icons.spinner
+              className="mr-2 size-4 animate-spin"
+              aria-hidden="true"
+            />
+          )}
           Sign in
           <span className="sr-only">Sign in</span>
         </Button>
