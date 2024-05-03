@@ -18,6 +18,7 @@ import { PasswordInput } from "~/components/password-input";
 import { useMutation } from "@tanstack/react-query";
 import { postData } from "~/lib/fetch";
 import { useNavigate } from "@remix-run/react";
+import { useToast } from "~/components/ui/use-toast";
 
 type Inputs = z.infer<typeof authSchema>;
 
@@ -25,6 +26,7 @@ const captains = console;
 
 export function SignInForm() {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -41,7 +43,9 @@ export function SignInForm() {
     },
     onSuccess: (data) => {
       navigate("/");
-      alert("Sign in successful! 🎉");
+      toast({
+        description: "Sign in successful! 🎉",
+      });
     },
   });
 
