@@ -14,27 +14,47 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { PasswordInput } from "~/components/password-input";
+import { useMutation } from "@tanstack/react-query";
+import { postData } from "~/lib/fetch";
+import { useNavigate } from "@remix-run/react";
 
 type Inputs = z.infer<typeof authSchema>;
 
+const captains = console;
+
 export function SignInForm() {
+  const navigate = useNavigate();
+
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      email: "",
+      id: "",
       password: "",
     },
   });
 
-  async function onSubmit(data: Inputs) {}
+  const mutation = useMutation({
+    mutationFn: (data: Inputs) => {
+      return postData("/api/auth", data);
+    },
+    onSuccess: (data) => {
+      navigate("/");
+      alert("Sign in successful! 🎉");
+    },
+  });
+
+  async function onSubmit(data: Inputs) {
+    captains.log("do something with the data", data);
+    mutation.mutate(data);
+  }
 
   return (
     <Form {...form}>
       <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="email"
+          name="id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>

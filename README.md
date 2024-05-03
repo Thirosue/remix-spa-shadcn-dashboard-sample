@@ -55,34 +55,48 @@ npx sirv-cli build/client/ --single
 #### Login
 
 ```
-% http POST https://next-typescript-sample-mu.vercel.app/api/auth id=test@test.com password=admin
+$ http POST https://next-typescript-sample-mu.vercel.app/api/auth id=test@test.com password=admin
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 201
 Content-Type: application/json; charset=utf-8
-Date: Mon, 23 Aug 2021 23:29:25 GMT
-ETag: "c9-6kjwixFGqj2C2hgCqf35OBK/l+Y"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:11:10 GMT
+Etag: "c9-PDcYRx3NdRkZNfDNysu6mbKC9u0"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/auth
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::lwsgp-1714716669706-90c9ccf38d87
 
 {
     "status": "ok",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mjk3NjQ5NjQsInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNjI5NzYxMzY0fQ.3M5XsLvIfiCcUcux6Ygs5X1GTksMtopwXPjf-cJdhr0"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ3MjAyNjksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE0NzE2NjY5fQ.FuE9EJFyyANZb-JxgVV9m1n3z9CDktd53cbHhuGxokM"
 }
 ```
 
 #### Sign Out
 
 ```
-% http POST https://next-typescript-sample-mu.vercel.app/api/auth/signout
+$ http POST https://next-typescript-sample-mu.vercel.app/api/auth/signout
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 15
 Content-Type: application/json; charset=utf-8
-Date: Thu, 19 Aug 2021 08:58:59 GMT
-ETag: "f-VaSQ4oDUiZblZNAEkkN+sX+q3Sg"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:12:08 GMT
+Etag: "f-VaSQ4oDUiZblZNAEkkN+sX+q3Sg"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/auth/signout
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::br6x2-1714716727836-bfedf344625d
 
 {
     "status": "ok"
@@ -92,19 +106,26 @@ Vary: Accept-Encoding
 #### Session Check
 
 ```
-% http POST https://next-typescript-sample-mu.vercel.app/api/auth/check "authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mjc3OTk3ODgsInBheWxvYWQiOnsidXNlciI6ImFkbWluIn0sImlhdCI6MTYyNzc5NjE4OH0.vkZzymb3hyftl2pb75wuLKaavfnZV5ZlR88aISIQOBQ"
+% http POST https://next-typescript-sample-mu.vercel.app/api/auth/check "authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ3MjAyNjksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE0NzE2NjY5fQ.FuE9EJFyyANZb-JxgVV9m1n3z9CDktd53cbHhuGxokM"
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 154
 Content-Type: application/json; charset=utf-8
-Date: Sun, 01 Aug 2021 05:37:18 GMT
-ETag: "9a-WG2wB4ewrnriUOAqysn9WZKtyC4"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:12:48 GMT
+Etag: "9a-27lKas4EPiNJeibOU2vedt5mR+c"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/auth/check
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::5n6kq-1714716767923-be7da68f1f83
 
 {
     "status": "ok",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mjc3OTk4MzgsImlhdCI6MTYyNzc5NjIzOH0.r7KYW3z8md7ZqN94TEuWRKoLRGB8Up6dAGkQrF7J9CE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ3MjAzNjgsImlhdCI6MTcxNDcxNjc2OH0.vecB7-Y0gnJREndEAVw-ofjrPg3fNImO_-VkQrxa9KE"
 }
 ```
 
@@ -113,13 +134,20 @@ Vary: Accept-Encoding
 ```
 % http POST https://next-typescript-sample-mu.vercel.app/api/password/change password=after
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 15
 Content-Type: application/json; charset=utf-8
-Date: Wed, 18 Aug 2021 05:47:58 GMT
-ETag: "f-VaSQ4oDUiZblZNAEkkN+sX+q3Sg"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:13:10 GMT
+Etag: "f-VaSQ4oDUiZblZNAEkkN+sX+q3Sg"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/password/change
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::j5fx9-1714716788641-e755a81c1a61
 
 {
     "status": "ok"
@@ -131,13 +159,20 @@ Vary: Accept-Encoding
 ```
 % http POST https://next-typescript-sample-mu.vercel.app/api/code/verify code=123456
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 15
 Content-Type: application/json; charset=utf-8
-Date: Wed, 18 Aug 2021 05:49:36 GMT
-ETag: "f-VaSQ4oDUiZblZNAEkkN+sX+q3Sg"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:13:30 GMT
+Etag: "f-VaSQ4oDUiZblZNAEkkN+sX+q3Sg"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/code/verify
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::6k79d-1714716809333-a4060fa9e579
 
 {
     "status": "ok"
@@ -153,13 +188,21 @@ Vary: Accept-Encoding
 ```
 % http 'https://next-typescript-sample-mu.vercel.app/api/products?page=0&rows=5'
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Age: 0
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 418
 Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Jul 2021 06:28:56 GMT
-ETag: "1a2-U2ohMMGmi3qNYLxR2flXsEJkdWk"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:13:57 GMT
+Etag: "1a2-U2ohMMGmi3qNYLxR2flXsEJkdWk"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/products
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::8t9hx-1714716836152-7bf5ffb09cc2
 
 {
     "count": 16,
@@ -203,17 +246,24 @@ Vary: Accept-Encoding
 ```
 % http POST https://next-typescript-sample-mu.vercel.app/api/products/post name=hoge description=hoge quantity=777
 HTTP/1.1 201 Created
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 62
 Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Jul 2021 06:26:47 GMT
-ETag: "3e-jwZIwKhCJX29WAxEMJMPwUd7Hgk"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:14:16 GMT
+Etag: "3e-SJ+M8/k3jxQdby1x+z6RjeOr0dE"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/products/post
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::n7ql2-1714716855844-e25133f6efaf
 
 {
     "description": "hoge",
-    "id": 936,
+    "id": 271,
     "name": "hoge",
     "quantity": "777"
 }
@@ -224,13 +274,20 @@ Vary: Accept-Encoding
 ```
 % http PUT 'https://next-typescript-sample-mu.vercel.app/api/products/put?id=4' name=hoge description=hoge quantity=777
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: PUT, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 60
 Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Jul 2021 06:30:16 GMT
-ETag: "3c-n6NUU6qGGHwu3q1V68ShspQ8AVw"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:14:32 GMT
+Etag: "3c-n6NUU6qGGHwu3q1V68ShspQ8AVw"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/products/put
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::nmxkp-1714716871883-0f2b15f0fc5f
 
 {
     "description": "hoge",
@@ -245,13 +302,20 @@ Vary: Accept-Encoding
 ```
 % http DELETE 'https://next-typescript-sample-mu.vercel.app/api/products/delete?id=4'
 HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: DELETE, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 2
 Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Jul 2021 06:30:55 GMT
-ETag: "2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
-Keep-Alive: timeout=5
-Vary: Accept-Encoding
+Date: Fri, 03 May 2024 06:14:47 GMT
+Etag: "2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/products/delete
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::9pswr-1714716887230-788f7428ecbe
 
 {}
 ```

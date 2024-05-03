@@ -8,6 +8,7 @@ import {
 import { cn } from "~/lib/utils";
 
 import type { LinksFunction } from "@remix-run/node";
+import { Providers } from "~/components/layout/providers";
 
 import stylesheet from "./tailwind.css?url";
 
@@ -25,7 +26,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased")}>
-        {children}
+        <Providers>{children}</Providers>
         <ScrollRestoration />
         <Scripts />
       </body>
