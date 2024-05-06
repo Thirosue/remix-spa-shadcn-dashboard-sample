@@ -33,7 +33,7 @@
     "react-hook-form": "^7.51.3",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.5"
+    "zod": "^3.23.6"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.9.1",
