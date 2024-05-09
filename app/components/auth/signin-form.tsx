@@ -58,7 +58,7 @@ export function SignInForm() {
         image: "https://avatars.githubusercontent.com/u/14899056?v=4", // dummy data
         token: data.token,
       });
-      navigate("/");
+      navigate("/dashboard/home");
       toast({
         description: "Sign in successful! 🎉",
       });
