@@ -1,5 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Button } from "~/components/ui/button";
+import { useSession } from "~/components/layout/session-provider";
+import { useNavigate } from "@remix-run/react";
+import { useToast } from "~/components/ui/use-toast";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,9 +12,13 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const { session, clearSession } = useSession();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix (SPA Mode)</h1>
+      {session && <h1>Welcome to {session.name}!</h1>}
       <ul>
         <li>
           <a
@@ -28,7 +35,17 @@ export default function Index() {
           </a>
         </li>
       </ul>
-      <Button>Click me</Button>
+      <Button
+        onClick={() => {
+          clearSession();
+          navigate("/auth/signin");
+          toast({
+            description: "Logged out successfully!",
+          });
+        }}
+      >
+        Log Out
+      </Button>
     </div>
   );
 }
