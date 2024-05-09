@@ -19,14 +19,23 @@ import { useMutation } from "@tanstack/react-query";
 import { postData } from "~/lib/fetch";
 import { useNavigate } from "@remix-run/react";
 import { useToast } from "~/components/ui/use-toast";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { useSession } from "~/components/layout/session-provider";
 
 type Inputs = z.infer<typeof authSchema>;
+
+type CustomJwtPayload = JwtPayload & {
+  payload: {
+    user: string;
+  };
+};
 
 const captains = console;
 
 export function SignInForm() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { updateSession } = useSession();
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -42,6 +51,13 @@ export function SignInForm() {
       return postData("/api/auth", data);
     },
     onSuccess: (data) => {
+      const decoded = jwtDecode(data.token) as CustomJwtPayload;
+      updateSession({
+        name: "John Doe", // dummy data
+        email: decoded.payload.user,
+        image: "https://avatars.githubusercontent.com/u/14899056?v=4", // dummy data
+        token: data.token,
+      });
       navigate("/");
       toast({
         description: "Sign in successful! 🎉",
