@@ -10,3 +10,13 @@ export interface NavItem {
   description?: string;
   alwaysShow?: boolean;
 }
+
+export type PageSearchFormValues = {
+  page?: number;
+  limit?: number;
+  sort?: string;
+};
+
+export type ProductSearchFormValues = {
+  name?: string;
+} & PageSearchFormValues;

@@ -2,6 +2,17 @@ import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
 import { getData } from "~/lib/fetch";
 import { useLoaderData } from "@remix-run/react";
+import BreadCrumb from "~/components/breadcrumb";
+import { ProductSearchFormValues } from "~/types";
+import {
+  PageableTable,
+  parseSortQueryParam,
+} from "~/components/ui/pageable-table";
+import { Separator } from "~/components/ui/separator";
+import { Skeleton } from "~/components/ui/skeleton";
+import { columns } from "~/components/product/columns";
+import { ProductTableHeader } from "~/components/product/product-table-header";
+import { ProductSearchForm } from "~/components/product/product-search-form";
 
 const captains = console;
 
@@ -11,6 +22,10 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "DashBoard Product" },
   ];
 };
+
+export const breadcrumbItems = [
+  { title: "Product", link: "/dashboard/product" },
+];
 
 // function that will execute on the client.
 export async function clientLoader() {
@@ -22,5 +37,32 @@ export async function clientLoader() {
 export default function Product() {
   const { count, data } = useLoaderData<typeof clientLoader>();
   captains.log("Product Page Result size: ", count, data);
-  return <Shell className="max-w-lg">Product Page Result size: {count}</Shell>;
+  const isPending = false;
+  const searchParams: ProductSearchFormValues = {
+    page: 0,
+    limit: 5,
+    sort: "name,asc",
+  };
+
+  return (
+    <Shell variant="sidebar">
+      <BreadCrumb items={breadcrumbItems} />
+      <ProductTableHeader isPending={isPending} totalCount={count} />
+      <Separator />
+      <ProductSearchForm searchParams={searchParams} />
+      <Separator />
+      {isPending ? (
+        <Skeleton className="h-[calc(65vh-220px)] rounded-md border" />
+      ) : (
+        <PageableTable
+          pageNo={searchParams.page!}
+          columns={columns}
+          totalCount={count}
+          data={data}
+          initailSort={parseSortQueryParam(searchParams.sort)}
+          pageCount={Math.ceil(count / searchParams.limit!)}
+        />
+      )}
+    </Shell>
+  );
 }

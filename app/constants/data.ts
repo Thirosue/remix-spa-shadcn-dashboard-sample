@@ -21,3 +21,10 @@ export const navItems: NavItem[] = [
     alwaysShow: true,
   },
 ];
+
+export type Product = {
+  id: string;
+  name: string;
+  description?: string | null;
+  quantity: number;
+};
