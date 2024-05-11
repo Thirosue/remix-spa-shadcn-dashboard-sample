@@ -2,7 +2,13 @@ import { Suspense } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
 import { getData } from "~/lib/fetch";
-import { useLoaderData, Await, defer } from "@remix-run/react";
+import {
+  useLoaderData,
+  Await,
+  defer,
+  useNavigation,
+  ClientLoaderFunctionArgs,
+} from "@remix-run/react";
 import BreadCrumb from "~/components/breadcrumb";
 import { ProductSearchFormValues } from "~/types";
 import {
@@ -29,15 +35,20 @@ export const breadcrumbItems = [
 ];
 
 // function that will execute on the client.
-export function clientLoader() {
+export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   // During client-side navigations, we hit our exposed API endpoints directly
-  const loaderPromise = getData("/api/products?page=0&rows=5");
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get("page") ?? "1") - 1;
+
+  captains.log("clientLoader start", new Date().toISOString());
+  const loaderPromise = getData(`/api/products?page=${page}&rows=5`);
   return defer({ loaderPromise });
 }
 
 export default function Product() {
   const { loaderPromise } = useLoaderData<typeof clientLoader>();
-  const isPending = false;
+  const navigation = useNavigation();
+  const isPending = navigation.state === "loading";
   const searchParams: ProductSearchFormValues = {
     page: 0,
     limit: 5,
@@ -63,7 +74,7 @@ export default function Product() {
                 <ProductSearchForm searchParams={searchParams} />
                 <Separator />
                 {isPending ? (
-                  <Skeleton className="h-[calc(65vh-220px)] rounded-md border" />
+                  <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />
                 ) : (
                   <PageableTable
                     pageNo={searchParams.page!}
