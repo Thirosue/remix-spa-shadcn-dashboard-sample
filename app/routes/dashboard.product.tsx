@@ -1,7 +1,8 @@
+import { Suspense } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
 import { getData } from "~/lib/fetch";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Await, defer } from "@remix-run/react";
 import BreadCrumb from "~/components/breadcrumb";
 import { ProductSearchFormValues } from "~/types";
 import {
@@ -28,15 +29,14 @@ export const breadcrumbItems = [
 ];
 
 // function that will execute on the client.
-export async function clientLoader() {
+export function clientLoader() {
   // During client-side navigations, we hit our exposed API endpoints directly
-  const data = await getData("/api/products?page=0&rows=5");
-  return data;
+  const loaderPromise = getData("/api/products?page=0&rows=5");
+  return defer({ loaderPromise });
 }
 
 export default function Product() {
-  const { count, data } = useLoaderData<typeof clientLoader>();
-  captains.log("Product Page Result size: ", count, data);
+  const { loaderPromise } = useLoaderData<typeof clientLoader>();
   const isPending = false;
   const searchParams: ProductSearchFormValues = {
     page: 0,
@@ -47,22 +47,38 @@ export default function Product() {
   return (
     <Shell variant="sidebar">
       <BreadCrumb items={breadcrumbItems} />
-      <ProductTableHeader isPending={isPending} totalCount={count} />
-      <Separator />
-      <ProductSearchForm searchParams={searchParams} />
-      <Separator />
-      {isPending ? (
-        <Skeleton className="h-[calc(65vh-220px)] rounded-md border" />
-      ) : (
-        <PageableTable
-          pageNo={searchParams.page!}
-          columns={columns}
-          totalCount={count}
-          data={data}
-          initailSort={parseSortQueryParam(searchParams.sort)}
-          pageCount={Math.ceil(count / searchParams.limit!)}
-        />
-      )}
+      <Suspense
+        fallback={
+          <Skeleton className="h-[calc(75vh-220px)] rounded-md border" />
+        }
+      >
+        <>
+          {/* here is where Remix awaits the promise */}
+          <Await resolve={loaderPromise}>
+            {/* now you have the resolved value */}
+            {({ count, data }) => (
+              <>
+                <ProductTableHeader isPending={isPending} totalCount={count} />
+                <Separator />
+                <ProductSearchForm searchParams={searchParams} />
+                <Separator />
+                {isPending ? (
+                  <Skeleton className="h-[calc(65vh-220px)] rounded-md border" />
+                ) : (
+                  <PageableTable
+                    pageNo={searchParams.page!}
+                    columns={columns}
+                    totalCount={count}
+                    data={data}
+                    initailSort={parseSortQueryParam(searchParams.sort)}
+                    pageCount={Math.ceil(count / searchParams.limit!)}
+                  />
+                )}
+              </>
+            )}
+          </Await>
+        </>
+      </Suspense>
     </Shell>
   );
 }
