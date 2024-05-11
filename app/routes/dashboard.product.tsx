@@ -39,20 +39,21 @@ export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   // During client-side navigations, we hit our exposed API endpoints directly
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") ?? "1") - 1;
+  const limit = parseInt(url.searchParams.get("limit") ?? "5");
 
   captains.log("clientLoader start", new Date().toISOString());
-  const loaderPromise = getData(`/api/products?page=${page}&rows=5`);
-  return defer({ loaderPromise });
+  const loaderPromise = getData(`/api/products?page=${page}&rows=${limit}`);
+  return defer({ loaderPromise, page, limit });
 }
 
 export default function Product() {
-  const { loaderPromise } = useLoaderData<typeof clientLoader>();
+  const { loaderPromise, page, limit } = useLoaderData<typeof clientLoader>();
   const navigation = useNavigation();
   const isPending = navigation.state === "loading";
   const searchParams: ProductSearchFormValues = {
-    page: 0,
-    limit: 5,
-    sort: "name,asc",
+    page,
+    limit,
+    sort: "id,asc",
   };
 
   return (
