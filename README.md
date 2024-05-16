@@ -183,6 +183,35 @@ X-Vercel-Id: hnd1::iad1::6k79d-1714716809333-a4060fa9e579
 
 #### Get
 
+- find
+
+```
+% http 'https://next-typescript-sample-mu.vercel.app/api/products/get?id=1'
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Methods: GET, OPTIONS
+Access-Control-Allow-Origin: *
+Age: 0
+Cache-Control: public, max-age=0, must-revalidate
+Connection: keep-alive
+Content-Length: 102
+Content-Type: application/json; charset=utf-8
+Date: Thu, 16 May 2024 07:23:57 GMT
+Etag: "66-iuGdBZkk9ljc2lvh62laBFM7VG0"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/products/get
+X-Vercel-Cache: MISS
+X-Vercel-Id: hnd1::iad1::8k486-1715844236791-775576aaa494
+
+{
+    "description": "16oz package of fresh organic strawberries",
+    "id": 1,
+    "name": "Strawberries",
+    "quantity": 1
+}
+```
+
 - findAll
 
 ```
