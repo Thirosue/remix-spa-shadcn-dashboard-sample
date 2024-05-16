@@ -14,3 +14,7 @@ export const authSchema = z.object({
       message: "Password must contain at least 8 characters",
     }),
 });
+
+export const csrfTokenSchema = z.object({
+  token: z.string(),
+});
