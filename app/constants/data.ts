@@ -9,7 +9,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: "Product",
-    href: "/dashboard/product?page=1&limit=5",
+    href: "/dashboard/products?page=1&limit=5",
     icon: "barcode",
     label: "product",
   },
