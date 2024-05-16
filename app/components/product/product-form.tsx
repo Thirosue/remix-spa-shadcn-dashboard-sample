@@ -12,10 +12,17 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { Icons } from "~/components/icons";
 import { Heading } from "~/components/ui/heading";
+import { postData } from "~/lib/fetch";
 import { Input } from "~/components/ui/input";
 import { Separator } from "~/components/ui/separator";
 import { productUpsertSchema } from "~/lib/validations/product";
+import { useToast } from "~/components/ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@remix-run/react";
+
+const captains = console;
 
 type ProductFormValues = z.infer<typeof productUpsertSchema>;
 
@@ -28,7 +35,13 @@ interface ProductFormProps {
   _csrf: string;
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
+export const ProductForm: React.FC<ProductFormProps> = ({
+  initialData,
+  _csrf,
+}) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const title = initialData ? "Edit product" : "Create product";
   const description = initialData ? "Edit a product." : "Add a new product.";
   const toastMessage = initialData ? "Product updated." : "Product created.";
@@ -46,11 +59,33 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     resolver: zodResolver(productUpsertSchema),
     defaultValues: {
       ...defaultValues,
+      token: _csrf,
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: (data: ProductFormValues) => {
+      return postData("/api/products/post", data);
+    },
+    onSuccess: () => {
+      navigate("/dashboard/products");
+      toast({
+        description: toastMessage,
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
   const onSubmit = async (data: ProductFormValues) => {
-    //TODO: Implement onSubmit
+    if (!mutation.isPending) {
+      captains.log("do something with the data", data);
+      mutation.mutate(data);
+    }
   };
 
   const onDelete = async () => {
@@ -139,7 +174,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
               )}
             />
           </div>
-          <Button className="ml-auto" type="submit">
+          <Button
+            className="ml-auto"
+            type="submit"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending && (
+              <Icons.spinner
+                className="mr-2 size-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
             {action}
           </Button>
         </form>
