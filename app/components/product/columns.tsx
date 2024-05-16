@@ -41,7 +41,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "quantity",
     header: "Quantity",
-    sortDescFirst: true, // This column will sort in descending order first (default for number columns anyway)
+    enableSorting: false,
   },
   {
     id: "actions",

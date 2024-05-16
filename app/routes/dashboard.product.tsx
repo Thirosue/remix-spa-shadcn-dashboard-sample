@@ -41,8 +41,9 @@ const parseUrl = (url: URL) => {
   const page = parseInt(url.searchParams.get("page") ?? "1");
   const limit = parseInt(url.searchParams.get("limit") ?? "5");
   const name = url.searchParams.get("name");
+  const sort = url.searchParams.get("sort");
 
-  return { page, limit, name };
+  return { page, limit, name, sort };
 };
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
@@ -66,7 +67,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   // During client-side navigations, we hit our exposed API endpoints directly
   const url = new URL(request.url);
-  const { page, limit, name } = parseUrl(url);
+  const { page, limit, name, sort } = parseUrl(url);
 
   captains.log("clientLoader start", new Date().toISOString());
 
@@ -77,14 +78,25 @@ export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   if (name) {
     params.append("name", name);
   }
+  if (sort) {
+    const { id, desc } = parseSortQueryParam(sort)[0];
+    params.append("orderBy", id);
+    params.append("order", desc ? "desc" : "asc");
+  }
 
   const loaderPromise = getData(`/api/products?${params.toString()}`);
 
-  return defer({ loaderPromise, page, limit, name: name ?? "" });
+  return defer({
+    loaderPromise,
+    page,
+    limit,
+    name: name ?? "",
+    sort: sort ?? "",
+  });
 }
 
 export default function Product() {
-  const { loaderPromise, name, page, limit } =
+  const { loaderPromise, name, page, limit, sort } =
     useLoaderData<typeof clientLoader>();
   const navigation = useNavigation();
   const isPending = navigation.state === "loading";
@@ -92,7 +104,7 @@ export default function Product() {
     name,
     page,
     limit,
-    sort: "",
+    sort,
   };
 
   return (
