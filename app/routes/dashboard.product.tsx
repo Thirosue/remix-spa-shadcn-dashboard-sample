@@ -3,11 +3,14 @@ import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
 import { getData } from "~/lib/fetch";
 import {
+  Form,
   useLoaderData,
   Await,
   defer,
   useNavigation,
+  ClientActionFunctionArgs,
   ClientLoaderFunctionArgs,
+  redirect,
 } from "@remix-run/react";
 import BreadCrumb from "~/components/breadcrumb";
 import { ProductSearchFormValues } from "~/types";
@@ -34,26 +37,62 @@ export const breadcrumbItems = [
   { title: "Product", link: "/dashboard/product" },
 ];
 
+const parseUrl = (url: URL) => {
+  const page = parseInt(url.searchParams.get("page") ?? "1");
+  const limit = parseInt(url.searchParams.get("limit") ?? "5");
+  const name = url.searchParams.get("name");
+
+  return { page, limit, name };
+};
+
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const body = await request.formData();
+  const url = new URL(request.url);
+  const { limit } = parseUrl(url);
+  const name = body.get("name");
+
+  const params = new URLSearchParams({
+    page: "1",
+    limit: limit.toString(),
+  });
+  if (name) {
+    params.append("name", name.toString());
+  }
+
+  return redirect(`/dashboard/product?${params.toString()}`);
+}
+
 // function that will execute on the client.
 export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   // During client-side navigations, we hit our exposed API endpoints directly
   const url = new URL(request.url);
-  const page = parseInt(url.searchParams.get("page") ?? "1") - 1;
-  const limit = parseInt(url.searchParams.get("limit") ?? "5");
+  const { page, limit, name } = parseUrl(url);
 
   captains.log("clientLoader start", new Date().toISOString());
-  const loaderPromise = getData(`/api/products?page=${page}&rows=${limit}`);
-  return defer({ loaderPromise, page, limit });
+
+  const params = new URLSearchParams({
+    page: (page - 1).toString(),
+    rows: limit.toString(),
+  });
+  if (name) {
+    params.append("name", name);
+  }
+
+  const loaderPromise = getData(`/api/products?${params.toString()}`);
+
+  return defer({ loaderPromise, page, limit, name: name ?? "" });
 }
 
 export default function Product() {
-  const { loaderPromise, page, limit } = useLoaderData<typeof clientLoader>();
+  const { loaderPromise, name, page, limit } =
+    useLoaderData<typeof clientLoader>();
   const navigation = useNavigation();
   const isPending = navigation.state === "loading";
   const searchParams: ProductSearchFormValues = {
+    name,
     page,
     limit,
-    sort: "id,asc",
+    sort: "",
   };
 
   return (
@@ -72,7 +111,9 @@ export default function Product() {
               <>
                 <ProductTableHeader isPending={isPending} totalCount={count} />
                 <Separator />
-                <ProductSearchForm searchParams={searchParams} />
+                <Form method="post">
+                  <ProductSearchForm searchParams={searchParams} />
+                </Form>
                 <Separator />
                 {isPending ? (
                   <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />

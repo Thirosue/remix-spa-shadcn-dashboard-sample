@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Label } from "@radix-ui/react-label";
 import { ProductSearchFormValues } from "~/types";
 
@@ -17,6 +18,8 @@ export function ProductSearchForm({
 }: {
   searchParams: ProductSearchFormValues;
 }) {
+  const [name, setName] = useState(searchParams.name);
+
   return (
     <Card>
       <CardHeader>
@@ -34,7 +37,8 @@ export function ProductSearchForm({
               type="text"
               placeholder="Please enter the name you want to search for"
               name="name"
-              defaultValue={searchParams.name}
+              defaultValue={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
         </div>
