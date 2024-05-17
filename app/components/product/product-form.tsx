@@ -14,7 +14,7 @@ import {
 } from "~/components/ui/form";
 import { Icons } from "~/components/icons";
 import { Heading } from "~/components/ui/heading";
-import { postData } from "~/lib/fetch";
+import { postData, putData, deleteData } from "~/lib/fetch";
 import { Input } from "~/components/ui/input";
 import { Separator } from "~/components/ui/separator";
 import { productUpsertSchema } from "~/lib/validations/product";
@@ -29,6 +29,7 @@ type ProductFormValues = z.infer<typeof productUpsertSchema>;
 interface ProductFormProps {
   initialData:
     | (ProductFormValues & {
+        id?: number;
         version?: number;
       })
     | null;
@@ -42,6 +43,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const isUpdate = initialData ? true : false;
   const title = initialData ? "Edit product" : "Create product";
   const description = initialData ? "Edit a product." : "Add a new product.";
   const toastMessage = initialData ? "Product updated." : "Product created.";
@@ -63,12 +65,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     },
   });
 
-  const mutation = useMutation({
+  const createProduct = useMutation({
     mutationFn: (data: ProductFormValues) => {
       return postData("/api/products/post", data);
     },
     onSuccess: () => {
-      navigate("/dashboard/products");
+      navigate("/dashboard/products?page=1&limit=5");
       toast({
         description: toastMessage,
       });
@@ -81,6 +83,26 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     },
   });
 
+  const updateProduct = useMutation({
+    mutationFn: (data: ProductFormValues) => {
+      return putData(`/api/products/put?id=${initialData?.id!}`, data);
+    },
+    onSuccess: () => {
+      navigate("/dashboard/products?page=1&limit=5");
+      toast({
+        description: toastMessage,
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const mutation = isUpdate ? updateProduct : createProduct;
+
   const onSubmit = async (data: ProductFormValues) => {
     if (!mutation.isPending) {
       captains.log("do something with the data", data);
@@ -88,8 +110,28 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     }
   };
 
+  const deleteProduct = useMutation({
+    mutationFn: (id: number) => {
+      return deleteData(`/api/products/delete?id=${id}`);
+    },
+    onSuccess: () => {
+      navigate("/dashboard/products?page=1&limit=5");
+      toast({
+        description: "Product deleted.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const onDelete = async () => {
-    // TODO: Implement onDelete
+    if (!deleteProduct.isPending) {
+      deleteProduct.mutate(initialData?.id!);
+    }
   };
 
   return (
@@ -97,7 +139,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (
-          <Button variant="destructive" size="sm" onClick={onDelete}>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={onDelete}
+            disabled={deleteProduct.isPending}
+          >
+            {deleteProduct.isPending && (
+              <Icons.spinner
+                className="mr-2 size-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
             <Trash className="h-4 w-4" />
           </Button>
         )}
