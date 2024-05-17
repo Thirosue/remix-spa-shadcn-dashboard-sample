@@ -62,19 +62,21 @@ Access-Control-Allow-Methods: GET, POST, OPTIONS
 Access-Control-Allow-Origin: *
 Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
-Content-Length: 201
+Content-Length: 394
 Content-Type: application/json; charset=utf-8
-Date: Fri, 03 May 2024 06:11:10 GMT
-Etag: "c9-PDcYRx3NdRkZNfDNysu6mbKC9u0"
+Date: Fri, 17 May 2024 10:26:00 GMT
+Etag: "18a-x4l081GYDVrqx/UH227LxZgHrtA"
 Server: Vercel
+Set-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY1NDYzNTksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE1OTQxNTU5fQ._OeD5BwM7k0E4lhgzAnpIep0kqTrnyRrBTx9rRPBNa0; Max-Age=604800; Path=/; HttpOnly; Secure; SameSite=Strict
 Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 X-Matched-Path: /api/auth
 X-Vercel-Cache: MISS
-X-Vercel-Id: hnd1::iad1::lwsgp-1714716669706-90c9ccf38d87
+X-Vercel-Id: hnd1::iad1::85jjz-1715941559211-57d1cef7e138
 
 {
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY1NDYzNTksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE1OTQxNTU5fQ._OeD5BwM7k0E4lhgzAnpIep0kqTrnyRrBTx9rRPBNa0",
     "status": "ok",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ3MjAyNjksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE0NzE2NjY5fQ.FuE9EJFyyANZb-JxgVV9m1n3z9CDktd53cbHhuGxokM"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTU5NDE1NTksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE1OTQxNTU5fQ.Ii8VUWPLQGxhZb26EmE9r18uqzc7WuRyYnH-tgA4cTo"
 }
 ```
 
@@ -106,7 +108,7 @@ X-Vercel-Id: hnd1::iad1::br6x2-1714716727836-bfedf344625d
 #### Session Check
 
 ```
-% http POST https://next-typescript-sample-mu.vercel.app/api/auth/check "authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ3MjAyNjksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE0NzE2NjY5fQ.FuE9EJFyyANZb-JxgVV9m1n3z9CDktd53cbHhuGxokM"
+% http POST https://next-typescript-sample-mu.vercel.app/api/auth/refreshTokenCheck X-REFRESH-TOKEN:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY1NDYzNTksInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNzE1OTQxNTU5fQ._OeD5BwM7k0E4lhgzAnpIep0kqTrnyRrBTx9rRPBNa0
 HTTP/1.1 200 OK
 Access-Control-Allow-Headers: Content-Type, Authorization
 Access-Control-Allow-Methods: GET, POST, OPTIONS
@@ -115,17 +117,17 @@ Cache-Control: public, max-age=0, must-revalidate
 Connection: keep-alive
 Content-Length: 154
 Content-Type: application/json; charset=utf-8
-Date: Fri, 03 May 2024 06:12:48 GMT
-Etag: "9a-27lKas4EPiNJeibOU2vedt5mR+c"
+Date: Fri, 17 May 2024 10:28:15 GMT
+Etag: "9a-dQ193s2mrbh5ro8+rR+pyxZo+44"
 Server: Vercel
 Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-X-Matched-Path: /api/auth/check
+X-Matched-Path: /api/auth/refreshTokenCheck
 X-Vercel-Cache: MISS
-X-Vercel-Id: hnd1::iad1::5n6kq-1714716767923-be7da68f1f83
+X-Vercel-Id: hnd1::iad1::fkcr4-1715941694783-94e18dfe9de3
 
 {
     "status": "ok",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ3MjAzNjgsImlhdCI6MTcxNDcxNjc2OH0.vecB7-Y0gnJREndEAVw-ofjrPg3fNImO_-VkQrxa9KE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTU5NDE2OTUsImlhdCI6MTcxNTk0MTY5NX0.WL2chDFOEBpPga2kHbNWpfwpBJAE7sfhzR62rrMtbSc"
 }
 ```
 
