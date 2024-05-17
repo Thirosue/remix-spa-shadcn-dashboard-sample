@@ -1,7 +1,10 @@
+import { Suspense } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
 import BreadCrumb from "~/components/breadcrumb";
 import { ProductForm } from "~/components/product/product-form";
+import { Await, defer, useLoaderData } from "@remix-run/react";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,11 +18,37 @@ const breadcrumbItems = [
   { title: "Create", link: "/dashboard/product/new" },
 ];
 
+// function that will execute on the client.
+export function clientLoader() {
+  // During client-side navigations, we hit our exposed API endpoints directly
+  const tokenPromise: Promise<string> = new Promise((resolve, _) => {
+    setTimeout(() => {
+      resolve("dummy-csrf-token");
+    }, 1000);
+  });
+
+  return defer({
+    tokenPromise,
+  });
+}
+
 export default function ProductNew() {
+  const { tokenPromise } = useLoaderData<typeof clientLoader>();
+
   return (
     <Shell variant="sidebar">
       <BreadCrumb items={breadcrumbItems} />
-      <ProductForm initialData={null} _csrf={"dummy-csrf-token"} />
+      <Suspense
+        fallback={
+          <Skeleton className="h-[calc(35vh-220px)] rounded-md border" />
+        }
+      >
+        {/* here is where Remix awaits the promise */}
+        <Await resolve={tokenPromise}>
+          {/* now you have the resolved value */}
+          {(token) => <ProductForm initialData={null} _csrf={token} />}
+        </Await>
+      </Suspense>
     </Shell>
   );
 }
