@@ -57,6 +57,7 @@ export function SignInForm() {
         email: decoded.payload.user,
         image: "https://avatars.githubusercontent.com/u/14899056?v=4", // dummy data
         token: data.token,
+        refreshToken: data.refreshToken,
       });
       navigate("/dashboard/home");
       toast({
