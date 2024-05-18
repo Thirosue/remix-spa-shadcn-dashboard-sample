@@ -60,7 +60,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     params.append("name", name.toString());
   }
 
-  return redirect(`/dashboard/product?${params.toString()}`);
+  return redirect(`/dashboard/products?${params.toString()}`);
 }
 
 // function that will execute on the client.
