@@ -83,7 +83,7 @@ X-Vercel-Id: hnd1::iad1::85jjz-1715941559211-57d1cef7e138
 #### Sign Out
 
 ```
-$ http POST https://next-typescript-sample-mu.vercel.app/api/auth/signout
+$ http DELETE https://next-typescript-sample-mu.vercel.app/api/auth/signout
 HTTP/1.1 200 OK
 Access-Control-Allow-Headers: Content-Type, Authorization
 Access-Control-Allow-Methods: GET, POST, OPTIONS
