@@ -4,6 +4,6 @@ export async function clientLoader() {
   return redirect(`/dashboard/home`);
 }
 
-export default function Index() {
+export default function DashboardIndex() {
   return <></>;
 }
