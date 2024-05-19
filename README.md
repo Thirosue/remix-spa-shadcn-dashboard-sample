@@ -1,5 +1,7 @@
 # templates/spa
 
+[![Deploy to GitHub Pages](https://github.com/Thirosue/remix-spa-shadcn-dashboard-sample/actions/workflows/deploy.yml/badge.svg)](https://github.com/Thirosue/remix-spa-shadcn-dashboard-sample/actions/workflows/deploy.yml)
+
 This template leverages [Remix SPA Mode](https://remix.run/docs/en/main/guides/spa-mode) and the [Remix Vite Plugin](https://remix.run/docs/en/main/guides/vite) to build your app as a Single-Page Application using [Client Data](https://remix.run/docs/en/main/guides/client-data) for all of your data loads and mutations.
 
 ## Setup
