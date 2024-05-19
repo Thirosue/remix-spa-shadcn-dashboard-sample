@@ -2,7 +2,14 @@
 
 [![Deploy to GitHub Pages](https://github.com/Thirosue/remix-spa-shadcn-dashboard-sample/actions/workflows/deploy.yml/badge.svg)](https://github.com/Thirosue/remix-spa-shadcn-dashboard-sample/actions/workflows/deploy.yml)
 
-This template leverages [Remix SPA Mode](https://remix.run/docs/en/main/guides/spa-mode) and the [Remix Vite Plugin](https://remix.run/docs/en/main/guides/vite) to build your app as a Single-Page Application using [Client Data](https://remix.run/docs/en/main/guides/client-data) for all of your data loads and mutations.
+<div align="center"><strong>Remix Spa Admin Dashboard Starter Template With Shadcn-ui</strong></div>
+<div align="center">
+This template leverages <a href="https://remix.run/docs/en/main/guides/spa-mode">Remix SPA Mode</a> and the <a href="https://remix.run/docs/en/main/guides/vite">Remix Vite Plugin</a> to build your app as a Single-Page Application using <a href="https://remix.run/docs/en/main/guides/client-data">Client Data</a> for all of your data loads and mutations.
+</div>
+<br />
+<div align="center">
+<a href="https://remix-spa-shadcn-dashboard-sample.vercel.app/auth/signin">View Demo</a>
+</div>
 
 ## Setup
 
