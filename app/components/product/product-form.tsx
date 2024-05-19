@@ -107,10 +107,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const onSubmit = async (data: ProductFormValues) => {
     if (!mutation.isPending) {
       logMessage({ message: "Product form submitted", object: data });
-      confirm({
-        title: "Check Updates",
-        description: "Are you sure you want to update this user?",
-      }).then(() => mutation.mutate(data));
+      mutation.mutate(data);
     }
   };
 
@@ -137,7 +134,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       confirm({
         title: "Check Delete",
         description: "Are you sure you want to delete this user?",
-      }).then(() => deleteProduct.mutate(initialData?.id!));
+      })
+        .then(() => deleteProduct.mutate(initialData?.id!))
+        .catch(() => {});
     }
   };
 
