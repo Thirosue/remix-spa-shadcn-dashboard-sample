@@ -21,6 +21,7 @@ import { productUpsertSchema } from "~/lib/validations/product";
 import { useToast } from "~/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@remix-run/react";
+import { useConfirm } from "~/components/layout/confirm-provider";
 
 const captains = console;
 
@@ -42,6 +43,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const confirm = useConfirm();
 
   const isUpdate = initialData ? true : false;
   const title = initialData ? "Edit product" : "Create product";
@@ -106,7 +108,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const onSubmit = async (data: ProductFormValues) => {
     if (!mutation.isPending) {
       captains.log("do something with the data", data);
-      mutation.mutate(data);
+      confirm({
+        title: "Check Updates",
+        description: "Are you sure you want to update this user?",
+      }).then(() => mutation.mutate(data));
     }
   };
 
@@ -130,7 +135,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const onDelete = async () => {
     if (!deleteProduct.isPending) {
-      deleteProduct.mutate(initialData?.id!);
+      confirm({
+        title: "Check Delete",
+        description: "Are you sure you want to delete this user?",
+      }).then(() => deleteProduct.mutate(initialData?.id!));
     }
   };
 
