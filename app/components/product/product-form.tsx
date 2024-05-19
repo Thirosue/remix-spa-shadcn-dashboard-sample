@@ -22,8 +22,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@remix-run/react";
 import { useConfirm } from "~/components/layout/confirm-provider";
-
-const captains = console;
+import { logMessage } from "~/lib/logger";
 
 type ProductFormValues = z.infer<typeof productUpsertSchema>;
 
@@ -107,7 +106,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const onSubmit = async (data: ProductFormValues) => {
     if (!mutation.isPending) {
-      captains.log("do something with the data", data);
+      logMessage({ message: "Product form submitted", object: data });
       confirm({
         title: "Check Updates",
         description: "Are you sure you want to update this user?",

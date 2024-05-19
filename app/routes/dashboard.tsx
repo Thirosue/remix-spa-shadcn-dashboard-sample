@@ -2,8 +2,7 @@ import { Outlet, ClientActionFunction, redirect } from "@remix-run/react";
 import Header from "~/components/layout/header";
 import Sidebar from "~/components/layout/sidebar";
 import { callRefreshTokenEndpoint } from "~/components/layout/session-provider";
-
-const captains = console;
+import { logMessage } from "~/lib/logger";
 
 // 認証を必要とする共通のloader高階関数
 // これは他のloader関数に認証チェックを追加するために使用されます。
@@ -12,7 +11,9 @@ export function withAuthLoader(
 ): ClientActionFunction {
   return async (args) => {
     try {
-      captains.log("Checking authentication...", new Date().toISOString());
+      logMessage({
+        message: `Checking authentication... at ${new Date().toISOString()}`,
+      });
 
       // リフレッシュトークンエンドポイントを呼び出し、ステータスをチェック
       const { status } = await callRefreshTokenEndpoint();
@@ -26,7 +27,7 @@ export function withAuthLoader(
       return loaderFn(args);
     } catch (error) {
       // エラーハンドリング: 認証チェック中にエラーが発生した場合、セッション切れのページにリダイレクト
-      captains.error("Error during authentication check:", error);
+      logMessage({ message: `Error during authentication check: ${error}` });
       return redirect("/session-expired");
     }
   };

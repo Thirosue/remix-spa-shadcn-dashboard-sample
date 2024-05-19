@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { postData, deleteData } from "~/lib/fetch";
-
-const captains = console;
+import { logMessage } from "~/lib/logger";
 
 type SessionState = {
   name: string;
@@ -48,7 +47,7 @@ export const callRefreshTokenEndpoint = async (): Promise<{
 
     return { status, token };
   } catch (error) {
-    console.error("Failed to refresh token:", error);
+    logMessage({ message: "Failed to refresh token", object: error });
     return { status: "error" };
   }
 };
@@ -64,7 +63,7 @@ export const SessionProvider = ({
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (error) {
-      console.error("Failed to decode token:", error);
+      logMessage({ message: "Failed to decode token", object: error });
       return null;
     }
   };
@@ -80,17 +79,17 @@ export const SessionProvider = ({
           image: "https://avatars.githubusercontent.com/u/14899056?v=4", // dummy data
           token,
         });
-        captains.log("Refreshed token:", token);
+        logMessage({ message: "Refreshed token", object: { token } });
       }
     } catch (error) {
-      console.error("Failed to refresh token:", error);
+      logMessage({ message: "Failed to refresh token", object: error });
       setSession(null);
     }
   };
 
   // 画面リフレッシュ対応: 初回レンダリング時にセッションを復元
   useEffect(() => {
-    captains.log("SessionProvider mounted");
+    logMessage({ message: "SessionProvider mounted" });
     checkAndRefreshToken();
   }, []);
 

@@ -6,8 +6,7 @@ import BreadCrumb from "~/components/breadcrumb";
 import { ProductForm } from "~/components/product/product-form";
 import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Skeleton } from "~/components/ui/skeleton";
-
-const captains = console;
+import { logMessage } from "~/lib/logger";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,7 +19,7 @@ export const meta: MetaFunction = () => {
 export function clientLoader({ params }: LoaderFunctionArgs) {
   // During client-side navigations, we hit our exposed API endpoints directly
   const id = params.id;
-  captains.log("productId", id);
+  logMessage({ message: `product detail id = ${id}` });
 
   const loaderPromise = getData(`/api/products/get?id=${id}`);
   const tokenPromise: Promise<string> = new Promise((resolve, _) => {

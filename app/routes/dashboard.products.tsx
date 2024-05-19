@@ -23,8 +23,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { columns } from "~/components/product/columns";
 import { ProductTableHeader } from "~/components/product/product-table-header";
 import { ProductSearchForm } from "~/components/product/product-search-form";
-
-const captains = console;
+import { logMessage } from "~/lib/logger";
 
 export const meta: MetaFunction = () => {
   return [
@@ -69,7 +68,7 @@ export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   const url = new URL(request.url);
   const { page, limit, name, sort } = parseUrl(url);
 
-  captains.log("clientLoader start", new Date().toISOString());
+  logMessage({ message: `clientLoader start at, ${new Date().toISOString()}` });
 
   const params = new URLSearchParams({
     page: (page - 1).toString(),

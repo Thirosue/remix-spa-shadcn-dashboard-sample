@@ -21,6 +21,7 @@ import { useNavigate } from "@remix-run/react";
 import { useToast } from "~/components/ui/use-toast";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useSession } from "~/components/layout/session-provider";
+import { logMessage } from "~/lib/logger";
 
 type Inputs = z.infer<typeof authSchema>;
 
@@ -29,8 +30,6 @@ type CustomJwtPayload = JwtPayload & {
     user: string;
   };
 };
-
-const captains = console;
 
 export function SignInForm() {
   const navigate = useNavigate();
@@ -67,7 +66,7 @@ export function SignInForm() {
   });
 
   async function onSubmit(data: Inputs) {
-    captains.log("do something with the data", data);
+    logMessage({ message: "Sign in form submitted", object: data });
     mutation.mutate(data);
   }
 
