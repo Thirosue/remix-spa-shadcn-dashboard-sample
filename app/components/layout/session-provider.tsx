@@ -45,9 +45,12 @@ export const callRefreshTokenEndpoint = async (): Promise<{
       { "X-Refresh-Token": refreshToken },
     );
 
-    return { status, token };
+    return { status, token, refreshToken };
   } catch (error) {
     logMessage({ message: "Failed to refresh token", object: error });
+    // TODO: 本番環境では不要。この実装はPOC用です。
+    //       本番環境では、同一ドメインに認証APIを用意し、リフレッシュトークンはHttpOnlyクッキーに保存してください。
+    sessionStorage.removeItem("refreshToken");
     return { status: "error" };
   }
 };

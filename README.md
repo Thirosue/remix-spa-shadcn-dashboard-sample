@@ -8,7 +8,7 @@ This template leverages <a href="https://remix.run/docs/en/main/guides/spa-mode"
 </div>
 <br />
 <div align="center">
-<a href="https://remix-spa-shadcn-dashboard-sample.vercel.app/auth/signin">View Demo</a>
+<a href="https://remix-spa-shadcn-dashboard-sample.vercel.app/">View Demo</a>
 </div>
 
 ## Setup

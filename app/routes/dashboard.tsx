@@ -16,10 +16,12 @@ export function withAuthLoader(
       });
 
       // リフレッシュトークンエンドポイントを呼び出し、ステータスをチェック
-      const { status } = await callRefreshTokenEndpoint();
+      const { status, refreshToken } = await callRefreshTokenEndpoint();
 
       // 認証に失敗した場合、セッション切れのページにリダイレクト
-      if (status !== "ok") {
+      if (!refreshToken) {
+        return redirect("/auth/signin");
+      } else if (status !== "ok") {
         return redirect("/session-expired");
       }
 
