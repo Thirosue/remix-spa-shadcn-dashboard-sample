@@ -1,0 +1,1 @@
+import{j as o}from"./jsx-runtime-BoP3Okkf.js";import{S as e}from"./shell-CcRgEtuu.js";import"./index-DSLhBl-f.js";const m=()=>[{title:"DashBoard - Home"},{name:"description",content:"DashBoard Home"}];function s(){return o.jsx(e,{className:"max-w-lg",children:"DashBoard Home"})}export{s as default,m as meta};

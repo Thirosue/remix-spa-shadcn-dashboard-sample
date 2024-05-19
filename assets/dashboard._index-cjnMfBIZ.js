@@ -1,0 +1,1 @@
+import{j as r}from"./jsx-runtime-BoP3Okkf.js";import{r as t}from"./responses-sH26UiXk.js";import"./router-miLWBQYb.js";async function n(){return t("/dashboard/home")}function s(){return r.jsx(r.Fragment,{})}export{n as clientLoader,s as default};
