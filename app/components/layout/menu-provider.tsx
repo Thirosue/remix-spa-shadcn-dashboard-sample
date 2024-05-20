@@ -4,6 +4,11 @@ import { logMessage } from "~/lib/logger";
 import { NavItem } from "~/types";
 import { navItems } from "~/constants/data";
 
+type Permission = {
+  namespace: string;
+  operation: "view" | "create" | "edit" | "delete";
+};
+
 const defaultSessionValue = {
   navItems: [] as NavItem[],
   updateNaviItems: async (token: string) => {},
@@ -16,6 +21,7 @@ export const fetchPermissions = async (
 ): Promise<{
   status: "ok" | "error";
   navItems?: NavItem[];
+  permissions?: Permission[];
 }> => {
   try {
     // トークンを使って認可情報を取得します。
@@ -29,11 +35,11 @@ export const fetchPermissions = async (
           return true;
         }
         // パーミッションに含まれる名前空間がタイトルに含まれているかどうかをチェックします。
-        return permissions.some((permission: { namespace: string }) =>
+        return permissions.some((permission: Permission) =>
           item.title.toLowerCase().includes(permission.namespace.toLowerCase()),
         );
       });
-      return { status: "ok", navItems: filteredNavItems };
+      return { status: "ok", navItems: filteredNavItems, permissions };
     }
 
     return { status: "error" };

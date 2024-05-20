@@ -2,6 +2,7 @@ import { Outlet, ClientActionFunction, redirect } from "@remix-run/react";
 import Header from "~/components/layout/header";
 import Sidebar from "~/components/layout/sidebar";
 import { callRefreshTokenEndpoint } from "~/components/layout/session-provider";
+import { fetchPermissions } from "~/components/layout/menu-provider";
 import { logMessage } from "~/lib/logger";
 
 // 認証を必要とする共通のloader高階関数
@@ -16,13 +17,36 @@ export function withAuthLoader(
       });
 
       // リフレッシュトークンエンドポイントを呼び出し、ステータスをチェック
-      const { status, refreshToken } = await callRefreshTokenEndpoint();
-
+      const { status, token } = await callRefreshTokenEndpoint();
       // 認証に失敗した場合、セッション切れのページにリダイレクト
-      if (!refreshToken) {
-        return redirect("/auth/signin");
-      } else if (status !== "ok") {
+      if (status !== "ok") {
         return redirect("/session-expired");
+      }
+
+      // ナビゲーションアイテムを更新
+      const {
+        status: menuStatus,
+        navItems,
+        permissions,
+      } = await fetchPermissions(token!);
+      // ナビゲーションアイテムの取得に失敗した場合、リダイレクト
+      if (menuStatus !== "ok") {
+        return redirect("/not-found");
+      }
+
+      const url = new URL(args.request.url);
+      // 現在のページのパスが許可されたメニューに含まれているかをチェック
+      const currentNavItem = navItems!.find(
+        (item) => item.href === url.pathname,
+      );
+      // 現在のページのパスが許可されたパーミッションに含まれているかをチェック
+      const hasPermission = permissions!.some((permission) =>
+        url.pathname.toLowerCase().includes(permission.namespace.toLowerCase()),
+      );
+
+      // ナビゲーションアイテムが存在せず、かつパーミッションがない場合はリダイレクト
+      if (!currentNavItem && !hasPermission) {
+        return redirect("/not-found");
       }
 
       // 認証に成功した場合、元のloader関数を実行
