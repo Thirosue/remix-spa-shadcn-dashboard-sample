@@ -140,6 +140,45 @@ X-Vercel-Id: hnd1::iad1::fkcr4-1715941694783-94e18dfe9de3
 }
 ```
 
+#### Get Permisson
+
+```
+$ http https://next-typescript-sample-mu.vercel.app/api/auth/permissions Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTYxNzIyMjMsInBheWxvYWQiOnsidXNlciI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoidXNlciJ9LCJpYXQiOjE3MTYxNjg2MjN9.3PWJF0ibVh7BwaC2xV7dHavnvQwmhW8qkJrPuGvVDpM'
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers: *
+Access-Control-Allow-Methods: GET, OPTIONS
+Access-Control-Allow-Origin: *
+Cache-Control: public, max-age=0, must-revalidate
+Connection: keep-alive
+Content-Length: 158
+Content-Type: application/json; charset=utf-8
+Date: Mon, 20 May 2024 01:38:49 GMT
+Etag: "9e-uyDVjhu2j3xsqjS8Dud7Gx7zBas"
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Matched-Path: /api/auth/permissions
+X-Vercel-Cache: BYPASS
+X-Vercel-Id: hnd1::iad1::whz9k-1716169129265-03a00dada990
+
+{
+    "permissions": [
+        {
+            "namespace": "product",
+            "operation": "view"
+        },
+        {
+            "namespace": "order",
+            "operation": "create"
+        },
+        {
+            "namespace": "order",
+            "operation": "view"
+        }
+    ],
+    "status": "ok"
+}
+```
+
 #### Change Password
 
 ```
