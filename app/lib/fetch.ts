@@ -1,4 +1,5 @@
-const BASE_URL = "https://next-typescript-sample-mu.vercel.app";
+const BASE_URL =
+  "https://next-typescript-sample-a0qnihmfd-thirosues-projects.vercel.app";
 
 export async function postData(url: string, data = {}, headers = {}) {
   // 既定のオプションには * が付いています

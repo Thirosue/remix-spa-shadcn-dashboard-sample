@@ -1,8 +1,9 @@
-import { navItems } from "~/constants/data";
 import { cn } from "~/lib/utils";
 import { DashboardNav } from "~/components/dashboard-nav";
+import { useMenu } from "./menu-provider";
 
 export default function Sidebar() {
+  const { navItems } = useMenu();
   return (
     <nav
       className={cn(`relative hidden h-screen w-72 border-r pt-16 lg:block`)}

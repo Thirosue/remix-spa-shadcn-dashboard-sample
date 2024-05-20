@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { navItems } from "~/constants/data";
 import { MenuIcon } from "lucide-react";
+import { useMenu } from "./menu-provider";
 
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { DashboardNav } from "~/components/dashboard-nav";
 
 export function MobileSidebar() {
   const [open, setOpen] = useState(false);
+  const { navItems } = useMenu();
   return (
     <>
       <Sheet open={open} onOpenChange={setOpen}>

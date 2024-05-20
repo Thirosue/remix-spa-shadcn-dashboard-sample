@@ -21,6 +21,7 @@ import { useNavigate } from "@remix-run/react";
 import { useToast } from "~/components/ui/use-toast";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useSession } from "~/components/layout/session-provider";
+import { useMenu } from "~/components/layout/menu-provider";
 import { logMessage } from "~/lib/logger";
 
 type Inputs = z.infer<typeof authSchema>;
@@ -35,6 +36,7 @@ export function SignInForm() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { updateSession } = useSession();
+  const { updateNaviItems } = useMenu();
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -58,6 +60,7 @@ export function SignInForm() {
         token: data.token,
         refreshToken: data.refreshToken,
       });
+      updateNaviItems(data.token);
       navigate("/dashboard/home");
       toast({
         description: "Sign in successful! 🎉",

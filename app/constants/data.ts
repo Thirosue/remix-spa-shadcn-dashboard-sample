@@ -6,6 +6,7 @@ export const navItems: NavItem[] = [
     href: "/dashboard/home",
     icon: "dashboard",
     label: "Dashboard",
+    alwaysShow: true,
   },
   {
     title: "Product",
