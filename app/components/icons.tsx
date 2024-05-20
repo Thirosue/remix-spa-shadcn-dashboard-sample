@@ -28,6 +28,7 @@ import {
   User,
   User2Icon,
   UserX2Icon,
+  ShoppingCart,
   X,
 } from "lucide-react";
 
@@ -50,6 +51,7 @@ export const Icons = {
   page: File,
   media: Image,
   barcode: Barcode,
+  order: ShoppingCart,
   settings: Settings,
   billing: CreditCard,
   ellipsis: MoreVertical,

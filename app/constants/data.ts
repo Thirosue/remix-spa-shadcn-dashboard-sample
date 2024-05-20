@@ -14,6 +14,12 @@ export const navItems: NavItem[] = [
     label: "product",
   },
   {
+    title: "Order",
+    href: "/dashboard/orders?page=1&limit=5",
+    icon: "order",
+    label: "product",
+  },
+  {
     title: "SignOut",
     href: "/signout",
     icon: "logout",
