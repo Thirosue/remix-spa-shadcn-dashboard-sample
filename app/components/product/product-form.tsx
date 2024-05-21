@@ -113,6 +113,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const deleteProduct = useMutation({
     mutationFn: (id: number) => {
+      // TODO: 必要に応じて _csrf トークンを利用し、CSRF対策を実施する
       return deleteData(`/api/products/delete?id=${id}`);
     },
     onSuccess: () => {

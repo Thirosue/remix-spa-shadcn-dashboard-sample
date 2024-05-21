@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, createContext, useContext } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
 import { getData } from "~/lib/fetch";
@@ -24,6 +24,8 @@ import { columns } from "~/components/product/columns";
 import { ProductTableHeader } from "~/components/product/product-table-header";
 import { ProductSearchForm } from "~/components/product/product-search-form";
 import { logMessage } from "~/lib/logger";
+
+const CsrfTokenContext = createContext("");
 
 export const meta: MetaFunction = () => {
   return [
@@ -84,9 +86,14 @@ export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   }
 
   const loaderPromise = getData(`/api/products?${params.toString()}`);
+  const tokenPromise: Promise<string> = new Promise((resolve, _) => {
+    setTimeout(() => {
+      resolve("dummy-csrf-token");
+    }, 1000);
+  });
 
   return defer({
-    loaderPromise,
+    loaderPromise: Promise.all([loaderPromise, tokenPromise]),
     page,
     limit,
     name: name ?? "",
@@ -118,26 +125,31 @@ export default function Product() {
           {/* here is where Remix awaits the promise */}
           <Await resolve={loaderPromise}>
             {/* now you have the resolved value */}
-            {({ count, data }) => (
+            {([{ count, data }, token]) => (
               <>
-                <ProductTableHeader isPending={isPending} totalCount={count} />
-                <Separator />
-                <Form method="post">
-                  <ProductSearchForm searchParams={searchParams} />
-                </Form>
-                <Separator />
-                {isPending ? (
-                  <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />
-                ) : (
-                  <PageableTable
-                    pageNo={searchParams.page!}
-                    columns={columns}
+                <CsrfTokenContext.Provider value={token}>
+                  <ProductTableHeader
+                    isPending={isPending}
                     totalCount={count}
-                    data={data}
-                    initailSort={parseSortQueryParam(searchParams.sort)}
-                    pageCount={Math.ceil(count / searchParams.limit!)}
                   />
-                )}
+                  <Separator />
+                  <Form method="post">
+                    <ProductSearchForm searchParams={searchParams} />
+                  </Form>
+                  <Separator />
+                  {isPending ? (
+                    <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />
+                  ) : (
+                    <PageableTable
+                      pageNo={searchParams.page!}
+                      columns={columns}
+                      totalCount={count}
+                      data={data}
+                      initailSort={parseSortQueryParam(searchParams.sort)}
+                      pageCount={Math.ceil(count / searchParams.limit!)}
+                    />
+                  )}
+                </CsrfTokenContext.Provider>
               </>
             )}
           </Await>
@@ -146,3 +158,5 @@ export default function Product() {
     </Shell>
   );
 }
+
+export const useProductCsrfContext = () => useContext(CsrfTokenContext);
