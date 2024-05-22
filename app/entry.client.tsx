@@ -7,12 +7,16 @@
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
+import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
+const { HelmetProvider } = HelmetAsync; // 必要なコンポーネントを取得
 
 startTransition(() => {
   hydrateRoot(
-    document,
+    document.querySelector("#app")!,
     <StrictMode>
-      <RemixBrowser />
+      <HelmetProvider>
+        <RemixBrowser />
+      </HelmetProvider>
     </StrictMode>,
   );
 });

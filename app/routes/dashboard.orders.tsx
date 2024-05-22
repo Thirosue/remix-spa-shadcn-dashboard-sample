@@ -1,5 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Shell } from "~/components/shell";
+import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
+const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,5 +11,12 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Order() {
-  return <Shell className="max-w-lg">Order Home</Shell>;
+  return (
+    <>
+      <Helmet>
+        <title>DashBoard - Order</title>
+      </Helmet>
+      <Shell className="max-w-lg">DashBoard Order</Shell>
+    </>
+  );
 }

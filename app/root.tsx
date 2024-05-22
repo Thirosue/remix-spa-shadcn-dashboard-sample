@@ -1,43 +1,44 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
+import { useState, useEffect } from "react";
+import { Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import { cn } from "~/lib/utils";
 
-import type { LinksFunction } from "@remix-run/node";
 import { Providers } from "~/components/layout/providers";
 
 import stylesheet from "./tailwind.css?url";
+import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
+const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
 
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
-];
+// SVGローディングスピナーコンポーネント
+import "./loader.css";
+const LoadingSpinner = () => (
+  <div className="loading-container">
+    <div className="loading-spinner"></div>
+    <p className="loading-text">Loading...</p>
+  </div>
+);
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function HydrateFallback() {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
-        <Providers>{children}</Providers>
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
+    <>
+      <LoadingSpinner />
+      <Scripts />
+    </>
   );
 }
 
-export default function App() {
-  return <Outlet />;
-}
-
-export function HydrateFallback() {
-  return <p>Loading...</p>;
+export default function Component() {
+  return (
+    <>
+      <Helmet>
+        <link rel="stylesheet" href={stylesheet} />
+      </Helmet>
+      <div className={cn("min-h-screen bg-background font-sans antialiased")}>
+        <Providers>
+          <Outlet />
+        </Providers>
+        <ScrollRestoration />
+        <Scripts />
+      </div>
+    </>
+  );
 }

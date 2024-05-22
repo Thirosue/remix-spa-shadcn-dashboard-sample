@@ -10,6 +10,8 @@ import {
 } from "~/components/ui/card";
 import { Shell } from "~/components/shell";
 import { SignInForm } from "~/components/auth/signin-form";
+import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
+const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,36 +22,41 @@ export const meta: MetaFunction = () => {
 
 export default function SignInPage() {
   return (
-    <Shell className="max-w-lg">
-      <Card>
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Sign in</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <SignInForm />
-        </CardContent>
-        <CardFooter className="flex flex-wrap items-center justify-between gap-2">
-          <div className="text-sm text-muted-foreground">
-            <span className="mr-1 hidden sm:inline-block">
-              Don&apos;t have an account?
-            </span>
+    <>
+      <Helmet>
+        <title>Sign In</title>
+      </Helmet>
+      <Shell className="max-w-lg">
+        <Card>
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl">Sign in</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <SignInForm />
+          </CardContent>
+          <CardFooter className="flex flex-wrap items-center justify-between gap-2">
+            <div className="text-sm text-muted-foreground">
+              <span className="mr-1 hidden sm:inline-block">
+                Don&apos;t have an account?
+              </span>
+              <Link
+                aria-label="Sign up"
+                to="/auth/signup"
+                className="text-primary underline-offset-4 transition-colors hover:underline"
+              >
+                Sign up
+              </Link>
+            </div>
             <Link
-              aria-label="Sign up"
-              to="/auth/signup"
-              className="text-primary underline-offset-4 transition-colors hover:underline"
+              aria-label="Reset password"
+              to="/auth/signin/reset-password"
+              className="text-sm text-primary underline-offset-4 transition-colors hover:underline"
             >
-              Sign up
+              Reset password
             </Link>
-          </div>
-          <Link
-            aria-label="Reset password"
-            to="/auth/signin/reset-password"
-            className="text-sm text-primary underline-offset-4 transition-colors hover:underline"
-          >
-            Reset password
-          </Link>
-        </CardFooter>
-      </Card>
-    </Shell>
+          </CardFooter>
+        </Card>
+      </Shell>
+    </>
   );
 }

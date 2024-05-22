@@ -7,6 +7,8 @@ import { ProductForm } from "~/components/product/product-form";
 import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { logMessage } from "~/lib/logger";
+import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
+const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
 
 export const meta: MetaFunction = () => {
   return [
@@ -43,19 +45,26 @@ export default function ProductUpdate() {
   ];
 
   return (
-    <Shell variant="sidebar">
-      <BreadCrumb items={breadcrumbItems} />
-      <Suspense
-        fallback={
-          <Skeleton className="h-[calc(35vh-220px)] rounded-md border" />
-        }
-      >
-        {/* here is where Remix awaits the promise */}
-        <Await resolve={loaderPromise}>
-          {/* now you have the resolved value */}
-          {([data, token]) => <ProductForm initialData={data} _csrf={token} />}
-        </Await>
-      </Suspense>
-    </Shell>
+    <>
+      <Helmet>
+        <title>DashBoard - Update Product</title>
+      </Helmet>
+      <Shell variant="sidebar">
+        <BreadCrumb items={breadcrumbItems} />
+        <Suspense
+          fallback={
+            <Skeleton className="h-[calc(35vh-220px)] rounded-md border" />
+          }
+        >
+          {/* here is where Remix awaits the promise */}
+          <Await resolve={loaderPromise}>
+            {/* now you have the resolved value */}
+            {([data, token]) => (
+              <ProductForm initialData={data} _csrf={token} />
+            )}
+          </Await>
+        </Suspense>
+      </Shell>
+    </>
   );
 }

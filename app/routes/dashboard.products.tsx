@@ -24,6 +24,8 @@ import { columns } from "~/components/product/columns";
 import { ProductTableHeader } from "~/components/product/product-table-header";
 import { ProductSearchForm } from "~/components/product/product-search-form";
 import { logMessage } from "~/lib/logger";
+import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
+const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
 
 const CsrfTokenContext = createContext("");
 
@@ -114,48 +116,53 @@ export default function Product() {
   };
 
   return (
-    <Shell variant="sidebar">
-      <BreadCrumb items={breadcrumbItems} />
-      <Suspense
-        fallback={
-          <Skeleton className="h-[calc(75vh-220px)] rounded-md border" />
-        }
-      >
-        <>
-          {/* here is where Remix awaits the promise */}
-          <Await resolve={loaderPromise}>
-            {/* now you have the resolved value */}
-            {([{ count, data }, token]) => (
-              <>
-                <CsrfTokenContext.Provider value={token}>
-                  <ProductTableHeader
-                    isPending={isPending}
-                    totalCount={count}
-                  />
-                  <Separator />
-                  <Form method="post">
-                    <ProductSearchForm searchParams={searchParams} />
-                  </Form>
-                  <Separator />
-                  {isPending ? (
-                    <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />
-                  ) : (
-                    <PageableTable
-                      pageNo={searchParams.page!}
-                      columns={columns}
+    <>
+      <Helmet>
+        <title>DashBoard - Product</title>
+      </Helmet>
+      <Shell variant="sidebar">
+        <BreadCrumb items={breadcrumbItems} />
+        <Suspense
+          fallback={
+            <Skeleton className="h-[calc(75vh-220px)] rounded-md border" />
+          }
+        >
+          <>
+            {/* here is where Remix awaits the promise */}
+            <Await resolve={loaderPromise}>
+              {/* now you have the resolved value */}
+              {([{ count, data }, token]) => (
+                <>
+                  <CsrfTokenContext.Provider value={token}>
+                    <ProductTableHeader
+                      isPending={isPending}
                       totalCount={count}
-                      data={data}
-                      initailSort={parseSortQueryParam(searchParams.sort)}
-                      pageCount={Math.ceil(count / searchParams.limit!)}
                     />
-                  )}
-                </CsrfTokenContext.Provider>
-              </>
-            )}
-          </Await>
-        </>
-      </Suspense>
-    </Shell>
+                    <Separator />
+                    <Form method="post">
+                      <ProductSearchForm searchParams={searchParams} />
+                    </Form>
+                    <Separator />
+                    {isPending ? (
+                      <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />
+                    ) : (
+                      <PageableTable
+                        pageNo={searchParams.page!}
+                        columns={columns}
+                        totalCount={count}
+                        data={data}
+                        initailSort={parseSortQueryParam(searchParams.sort)}
+                        pageCount={Math.ceil(count / searchParams.limit!)}
+                      />
+                    )}
+                  </CsrfTokenContext.Provider>
+                </>
+              )}
+            </Await>
+          </>
+        </Suspense>
+      </Shell>
+    </>
   );
 }
 
