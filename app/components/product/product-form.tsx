@@ -86,7 +86,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const updateProduct = useMutation({
     mutationFn: (data: ProductFormValues) => {
-      return putData(`/api/products/put?id=${initialData?.id!}`, data);
+      return putData(`/api/products/put?id=${initialData?.id!}`, data); // eslint-disable-line
     },
     onSuccess: () => {
       navigate("/dashboard/products?page=1&limit=5");
@@ -136,7 +136,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         title: "Check Delete",
         description: "Are you sure you want to delete this user?",
       })
-        .then(() => deleteProduct.mutate(initialData?.id!))
+        .then(() => deleteProduct.mutate(initialData?.id!)) // eslint-disable-line
         .catch(() => {});
     }
   };

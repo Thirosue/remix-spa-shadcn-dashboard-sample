@@ -101,5 +101,3 @@ export const useConfirm = (): ((options: DialogOptions) => Promise<void>) => {
   const { confirm } = useContext(ConfirmContext);
   return confirm;
 };
-
-export default ConfirmProvider;

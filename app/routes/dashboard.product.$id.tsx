@@ -24,7 +24,7 @@ export function clientLoader({ params }: LoaderFunctionArgs) {
   logMessage({ message: `product detail id = ${id}` });
 
   const loaderPromise = getData(`/api/products/get?id=${id}`);
-  const tokenPromise: Promise<string> = new Promise((resolve, _) => {
+  const tokenPromise: Promise<string> = new Promise((resolve) => {
     setTimeout(() => {
       resolve("dummy-csrf-token");
     }, 1000);

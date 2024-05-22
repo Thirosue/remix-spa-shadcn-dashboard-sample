@@ -25,7 +25,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const _csrf = useProductCsrfContext();
+  const _csrf = useProductCsrfContext(); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const deleteProduct = useMutation({
     mutationFn: (id: string) => {

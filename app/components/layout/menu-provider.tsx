@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { getData } from "~/lib/fetch";
 import { logMessage } from "~/lib/logger";
 import { NavItem } from "~/types";
@@ -11,7 +11,7 @@ type Permission = {
 
 const defaultSessionValue = {
   navItems: [] as NavItem[],
-  updateNaviItems: async (token: string) => {},
+  updateNaviItems: async (token: string) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
 };
 
 const MenuContext = createContext(defaultSessionValue);
@@ -78,5 +78,3 @@ export const MenuProvider = ({
 
 // カスタムフックを作成してコンテキストにアクセスできるようにする
 export const useMenu = () => useContext(MenuContext);
-
-export default MenuProvider;

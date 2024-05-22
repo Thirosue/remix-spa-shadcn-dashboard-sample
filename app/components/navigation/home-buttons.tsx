@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useNavigate } from "@remix-run/react";
 import { cn } from "~/lib/utils";
 import { useMounted } from "~/hooks/use-mounted";

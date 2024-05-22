@@ -11,6 +11,7 @@ export default function Header() {
       <nav className="flex h-14 items-center justify-between px-4">
         <div className="hidden lg:block">
           <Link
+            rel="noreferrer"
             to={"https://github.com/Thirosue/remix-spa-shadcn-dashboard-sample"}
             target="_blank"
           >

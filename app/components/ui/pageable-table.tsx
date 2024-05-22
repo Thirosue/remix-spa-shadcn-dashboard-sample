@@ -1,4 +1,4 @@
-import React from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "@remix-run/react";
 import { PageSearchFormValues } from "~/types";
 import {
@@ -51,7 +51,6 @@ export function parseSortQueryParam(query: string | undefined) {
 export interface PageableTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageNo: number;
   pageSizeOptions?: number[];
   initailSort?: SortingState;
   pageCount: number;
@@ -61,7 +60,6 @@ export interface PageableTableProps<TData, TValue> {
 export function PageableTable<TData, TValue>({
   columns,
   data,
-  pageNo,
   totalCount,
   initailSort = [],
   pageCount,
@@ -84,7 +82,7 @@ export function PageableTable<TData, TValue>({
   console.log("value", table.getFilteredSelectedRowModel()); */
 
   // Create query string
-  const createQueryString = React.useCallback(
+  const createQueryString = useCallback(
     (params: Record<string, string | number | null>) => {
       const newSearchParams = new URLSearchParams(location.search);
 
@@ -102,15 +100,14 @@ export function PageableTable<TData, TValue>({
   );
 
   // Handle server-side pagination
-  const [{ pageIndex, pageSize }, setPagination] =
-    React.useState<PaginationState>({
-      pageIndex: fallbackPage - 1,
-      pageSize: fallbackPerPage,
-    });
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: fallbackPage - 1,
+    pageSize: fallbackPerPage,
+  });
 
-  const [sorting, setSorting] = React.useState<SortingState>(initailSort);
+  const [sorting, setSorting] = useState<SortingState>(initailSort);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const queryObject = {
       page: pageIndex + 1,
       limit: pageSize,
@@ -129,7 +126,15 @@ export function PageableTable<TData, TValue>({
     if (`${window.location.pathname}${window.location.search}` !== newUrl) {
       navigate(`${location.pathname}?${queryString}`);
     }
-  }, [sorting, pageIndex, pageSize]);
+  }, [
+    sorting,
+    pageIndex,
+    pageSize,
+    createQueryString,
+    navigate,
+    location.pathname,
+    location.search,
+  ]);
 
   const table = useReactTable({
     data,
@@ -163,8 +168,11 @@ export function PageableTable<TData, TValue>({
                   return (
                     <TableHead key={header.id}>
                       <div
+                        role="button"
+                        tabIndex={0}
                         className="flex items-center"
                         onClick={header.column.getToggleSortingHandler()}
+                        onKeyDown={header.column.getToggleSortingHandler()}
                       >
                         {header.isPlaceholder
                           ? null

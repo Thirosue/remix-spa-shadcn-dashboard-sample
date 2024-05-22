@@ -1,6 +1,5 @@
 import * as z from "zod";
 
-import { authSchema } from "./auth";
 import { updateSchema } from "./system";
 
 const productSchema = z.object({

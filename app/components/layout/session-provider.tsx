@@ -19,7 +19,7 @@ type SessionValue = {
 
 const defaultSessionValue = {
   session: null,
-  updateSession: (value: SessionState) => {},
+  updateSession: (value: SessionState) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
   clearSession: () => {},
 };
 
@@ -64,7 +64,7 @@ export const SessionProvider = ({
   const [session, setSession] = useState<SessionState>(null);
   const { updateNaviItems } = useMenu();
 
-  const decodeToken = (token: string): any => {
+  const decodeToken = (token: string) => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (error) {
@@ -73,31 +73,31 @@ export const SessionProvider = ({
     }
   };
 
-  const checkAndRefreshToken = async () => {
-    try {
-      const { status, token } = await callRefreshTokenEndpoint();
-      if (status === "ok" && token) {
-        const payload = decodeToken(token);
-        setSession({
-          name: "John Doe", // dummy data
-          email: payload.email,
-          image: "https://avatars.githubusercontent.com/u/14899056?v=4", // dummy data
-          token,
-        });
-        updateNaviItems(token);
-        logMessage({ message: "Refreshed token", object: { token } });
-      }
-    } catch (error) {
-      logMessage({ message: "Failed to refresh token", object: error });
-      setSession(null);
-    }
-  };
-
   // 画面リフレッシュ対応: 初回レンダリング時にセッションを復元
   useEffect(() => {
+    const checkAndRefreshToken = async () => {
+      try {
+        const { status, token } = await callRefreshTokenEndpoint();
+        if (status === "ok" && token) {
+          const payload = decodeToken(token);
+          setSession({
+            name: "John Doe", // dummy data
+            email: payload.email,
+            image: "https://avatars.githubusercontent.com/u/14899056?v=4", // dummy data
+            token,
+          });
+          updateNaviItems(token);
+          logMessage({ message: "Refreshed token", object: { token } });
+        }
+      } catch (error) {
+        logMessage({ message: "Failed to refresh token", object: error });
+        setSession(null);
+      }
+    };
+
     logMessage({ message: "SessionProvider mounted" });
     checkAndRefreshToken();
-  }, []);
+  }, [updateNaviItems]); //
 
   const clearSession = async () => {
     try {
@@ -135,5 +135,3 @@ export const SessionProvider = ({
 
 // カスタムフックを作成してコンテキストにアクセスできるようにする
 export const useSession = () => useContext(SessionContext);
-
-export default SessionProvider;

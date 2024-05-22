@@ -1,8 +1,20 @@
-import pino from "pino";
+import pino from "pino"; // eslint-disable-line
+
+// マスキングするフィールドを含むオブジェクトの型定義
+interface MaskableObject {
+  id?: string;
+  name?: string;
+  email?: string;
+  token?: string;
+  refreshToken?: string;
+  password?: string;
+  tel?: string;
+  [key: string]: string | number | boolean | undefined; // 他の任意のフィールドも許容
+}
 
 // カスタムログメッセージの型定義
 interface CustomLogMessage {
-  object?: any;
+  object?: MaskableObject;
   message: string;
 }
 
@@ -10,7 +22,7 @@ interface CustomLogMessage {
 const Hidden = "[******]";
 
 // 指定されたフィールドをマスキングする関数
-function maskObject(obj: any) {
+function maskObject(obj: MaskableObject): MaskableObject {
   const fieldsToMask = [
     "id",
     "name",

@@ -39,7 +39,7 @@ export default tseslint.config(
     rules: {
       ...reactRecommended.rules,
       ...reactJSXRuntime.rules,
-      "no-console": "error",
+      "no-console": "error"
     },
     languageOptions: {
       ...reactRecommended.languageOptions,
@@ -69,6 +69,9 @@ export default tseslint.config(
   },
   {
     files: ["**/*.{ts,tsx}"],
+    rules: {
+      "react/prop-types": "off",
+    },
     plugins: {
       import: importPlugin,
     },

@@ -88,7 +88,7 @@ export function clientLoader({ request }: ClientLoaderFunctionArgs) {
   }
 
   const loaderPromise = getData(`/api/products?${params.toString()}`);
-  const tokenPromise: Promise<string> = new Promise((resolve, _) => {
+  const tokenPromise: Promise<string> = new Promise((resolve) => {
     setTimeout(() => {
       resolve("dummy-csrf-token");
     }, 1000);

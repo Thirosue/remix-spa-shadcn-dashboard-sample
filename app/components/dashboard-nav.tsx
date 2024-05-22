@@ -1,7 +1,6 @@
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import { Dispatch, SetStateAction } from "react";
 import { NavItem } from "~/types";
-import { useLocation } from "@remix-run/react";
 
 import { cn } from "~/lib/utils";
 import { Icons } from "~/components/icons";

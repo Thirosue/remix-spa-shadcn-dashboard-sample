@@ -23,7 +23,7 @@ const breadcrumbItems = [
 // function that will execute on the client.
 export function clientLoader() {
   // During client-side navigations, we hit our exposed API endpoints directly
-  const tokenPromise: Promise<string> = new Promise((resolve, _) => {
+  const tokenPromise: Promise<string> = new Promise((resolve) => {
     setTimeout(() => {
       resolve("dummy-csrf-token");
     }, 1000);

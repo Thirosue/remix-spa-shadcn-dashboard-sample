@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import { cn } from "~/lib/utils";
 
