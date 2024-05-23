@@ -97,7 +97,7 @@ export const SessionProvider = ({
 
     logMessage({ message: "SessionProvider mounted" });
     checkAndRefreshToken();
-  }, [updateNaviItems]); //
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const clearSession = async () => {
     try {
