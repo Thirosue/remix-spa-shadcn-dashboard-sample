@@ -147,7 +147,6 @@ export default function Product() {
                       <Skeleton className="h-[calc(55vh-220px)] rounded-md border" />
                     ) : (
                       <PageableTable
-                        pageNo={searchParams.page!}
                         columns={columns}
                         totalCount={count}
                         data={data}
