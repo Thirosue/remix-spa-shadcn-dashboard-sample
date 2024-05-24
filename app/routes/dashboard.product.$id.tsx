@@ -7,6 +7,7 @@ import { ProductForm } from "~/components/product/product-form";
 import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { logMessage } from "~/lib/logger";
+import { accessToken } from "~/components/layout/session-provider";
 import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
 const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
 
@@ -23,7 +24,10 @@ export function clientLoader({ params }: LoaderFunctionArgs) {
   const id = params.id;
   logMessage({ message: `product detail id = ${id}` });
 
-  const loaderPromise = getData(`/api/products/get?id=${id}`);
+  const loaderPromise = getData(
+    `/api/products/get?id=${id}`,
+    { Authorization: `Bearer ${accessToken!}` }, // TODO: HttpOnlyクッキーの利用を検討
+  );
   const tokenPromise: Promise<string> = new Promise((resolve) => {
     setTimeout(() => {
       resolve("dummy-csrf-token");

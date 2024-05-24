@@ -25,6 +25,8 @@ const defaultSessionValue = {
 
 const SessionContext = createContext(defaultSessionValue as SessionValue);
 
+export let accessToken: string | null = null; // client-side navigation(clientLoader)で使用するためexport
+
 export const callRefreshTokenEndpoint = async (): Promise<{
   status: "ok" | "error";
   token?: string;
@@ -52,6 +54,7 @@ export const callRefreshTokenEndpoint = async (): Promise<{
     // TODO: 本番環境では不要。この実装はPOC用です。
     //       本番環境では、同一ドメインに認証APIを用意し、リフレッシュトークンはHttpOnlyクッキーに保存してください。
     sessionStorage.removeItem("refreshToken");
+    accessToken = null;
     return { status: "error" };
   }
 };
@@ -107,6 +110,7 @@ export const SessionProvider = ({
       // TODO: 本番環境では不要。この実装はPOC用です。
       //       本番環境では、同一ドメインに認証APIを用意し、リフレッシュトークンはHttpOnlyクッキーに保存してください。
       sessionStorage.removeItem("refreshToken");
+      accessToken = null;
     }
   };
 
@@ -117,6 +121,7 @@ export const SessionProvider = ({
       // TODO: 本番環境では不要。この実装はPOC用です。
       //       本番環境では、同一ドメインに認証APIを用意し、リフレッシュトークンはHttpOnlyクッキーに保存してください。
       sessionStorage.setItem("refreshToken", newSession.refreshToken!);
+      accessToken = newSession.token;
     }
   };
 

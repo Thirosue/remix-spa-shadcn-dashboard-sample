@@ -22,6 +22,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@remix-run/react";
 import { useConfirm } from "~/components/layout/confirm-provider";
+import { useSession } from "~/components/layout/session-provider";
 import { logMessage } from "~/lib/logger";
 
 type ProductFormValues = z.infer<typeof productUpsertSchema>;
@@ -43,6 +44,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const confirm = useConfirm();
+  const { session } = useSession();
 
   const isUpdate = initialData ? true : false;
   const title = initialData ? "Edit product" : "Create product";
@@ -68,7 +70,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const createProduct = useMutation({
     mutationFn: (data: ProductFormValues) => {
-      return postData("/api/products/post", data);
+      // TODO: 必要に応じて _csrf トークンを利用し、CSRF対策を実施する
+      return postData("/api/products/post", data, {
+        Authorization: `Bearer ${session?.token}`,
+      });
     },
     onSuccess: () => {
       navigate("/dashboard/products?page=1&limit=5");
@@ -86,7 +91,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const updateProduct = useMutation({
     mutationFn: (data: ProductFormValues) => {
-      return putData(`/api/products/put?id=${initialData?.id!}`, data); // eslint-disable-line
+      // TODO: 必要に応じて _csrf トークンを利用し、CSRF対策を実施する
+      // eslint-disable-next-line
+      return putData(`/api/products/put?id=${initialData?.id!}`, data, {
+        Authorization: `Bearer ${session?.token}`,
+      });
     },
     onSuccess: () => {
       navigate("/dashboard/products?page=1&limit=5");
@@ -114,7 +123,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const deleteProduct = useMutation({
     mutationFn: (id: number) => {
       // TODO: 必要に応じて _csrf トークンを利用し、CSRF対策を実施する
-      return deleteData(`/api/products/delete?id=${id}`);
+      return deleteData(`/api/products/delete?id=${id}`, {
+        Authorization: `Bearer ${session?.token}`,
+      });
     },
     onSuccess: () => {
       navigate("/dashboard/products?page=1&limit=5");

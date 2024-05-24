@@ -23,6 +23,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { columns } from "~/components/product/columns";
 import { ProductTableHeader } from "~/components/product/product-table-header";
 import { ProductSearchForm } from "~/components/product/product-search-form";
+import { accessToken } from "~/components/layout/session-provider";
 import { logMessage } from "~/lib/logger";
 import * as HelmetAsync from "react-helmet-async"; // デフォルトエクスポートとしてインポート
 const { Helmet } = HelmetAsync; // 必要なコンポーネントを取得
@@ -87,7 +88,10 @@ export function clientLoader({ request }: ClientLoaderFunctionArgs) {
     params.append("order", desc ? "desc" : "asc");
   }
 
-  const loaderPromise = getData(`/api/products?${params.toString()}`);
+  const loaderPromise = getData(
+    `/api/products?${params.toString()}`,
+    { Authorization: `Bearer ${accessToken!}` }, // TODO: HttpOnlyクッキーの利用を検討
+  );
   const tokenPromise: Promise<string> = new Promise((resolve) => {
     setTimeout(() => {
       resolve("dummy-csrf-token");
