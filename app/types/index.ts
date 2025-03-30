@@ -20,3 +20,23 @@ export type PageSearchFormValues = {
 export type ProductSearchFormValues = {
   name?: string;
 } & PageSearchFormValues;
+
+export type CodeSearchFormValues = {
+  categoryCode?: string;
+  categoryName?: string;
+} & PageSearchFormValues;
+
+export type CodeCategory = {
+  categoryCode: string;
+  categoryName: string;
+  description?: string | null;
+};
+
+export type Code = {
+  id: string;
+  categoryCode: string;
+  codeValue: string;
+  codeName: string;
+  codeAlias?: string | null;
+  displayOrder: number;
+};

@@ -18,3 +18,18 @@ export function useMounted() {
 
   return mounted;
 }
+
+/**
+ * A custom React hook that provides state for tracking form submission status.
+ * Useful for disabling buttons during form submission to prevent multiple submissions.
+ *
+ * @returns {Object} An object containing isSubmitting state and a function to update it
+ */
+export function useIsSubmitting() {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  return {
+    isSubmitting,
+    setIsSubmitting,
+  };
+}
